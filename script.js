@@ -10,6 +10,11 @@ const gameResults = {
   computerWins: "Computer wins!"
 };
 
+function getComputerChoice() {
+  const options = Object.keys(gameRules)
+  return options[Math.floor(Math.random() * options.length)];
+}
+
 function playRound(playerChoice, computerChoice) {
   console.log(`Player chooses: ${playerChoice}\nComputer chooses: ${computerChoice}`);
 
