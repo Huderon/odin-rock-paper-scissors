@@ -41,3 +41,36 @@ function playRound(playerChoice, computerChoice) {
 
   return gameResults.computerWins;
 }
+
+function game(rounds) {
+  let playerScore = 0;
+  let computerScore = 0;
+
+  for (let i = 0; i < rounds; i++) {
+    const roundResult = playRound(getPlayerChoice(), getComputerChoice())
+
+    if (roundResult === gameResults.playerWins) {
+      playerScore++
+    }
+    if (roundResult === gameResults.computerWins) {
+      computerScore++
+    }
+
+    console.log(`Round result: ${roundResult}\nCurrent Score: Player: ${playerScore} Computer: ${computerScore}`);
+  }
+
+  console.log(`Final Score: Player: ${playerScore} Computer: ${computerScore}`);
+
+  let result = gameResults.tie;
+
+  if (playerScore > computerScore) {
+    result = gameResults.playerWins;
+  }
+  if (playerScore < computerScore) {
+    result = gameResults.computerWins;
+  }
+
+  return result;
+}
+
+game(roundsPerGame)
