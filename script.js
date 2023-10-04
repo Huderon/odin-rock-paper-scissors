@@ -15,6 +15,20 @@ function getComputerChoice() {
   return options[Math.floor(Math.random() * options.length)];
 }
 
+function getPlayerChoice() {
+  let playerChoice = "";
+
+  do {
+    playerChoice = prompt("Enter one of the following options: rock, paper, scissors", "").toLowerCase();
+
+    if (!gameRules[playerChoice]) {
+      alert("Enter a valid option.");
+    }
+  } while (!gameRules[playerChoice]);
+
+  return playerChoice;
+}
+
 function playRound(playerChoice, computerChoice) {
   console.log(`Player chooses: ${playerChoice}\nComputer chooses: ${computerChoice}`);
 
