@@ -1,12 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./script.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Rock Paper Scissors</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="game">
+      <div class="game__score">
+        <div class="game__player-score">
+          Player:
+          <span id="player-score" class="game__score-value">0</span>
+        </div>
+        <div class="game__computer-score">
+          Computer:
+          <span id="computer-score" class="game__score-value">0</span>
+        </div>
+      </div>
+      <div class="game__result">
+        <div class="game__result-text">
+          <p class="game__result-value">
+            Result: <span id="game-result"></span>
+          </p>
+        </div>
+        <div class="game__result-hands">
+          <p class="game__result-hand">
+            Player's Hand: <span id="player-hand"></span>
+          </p>
+          <p class="game__result-hand">
+            Computer's Hand: <span id="computer-hand"></span>
+          </p>
+        </div>
+      </div>
+      <div class="game__choices">
+        <button id="rock" class="game__choice-button game__choice-rock">
+          ✊
+        </button>
+        <button id="paper" class="game__choice-button game__choice-paper">
+          🖐️
+        </button>
+        <button id="scissors" class="game__choice-button game__choice-scissors">
+          ✌️
+        </button>
+      </div>
+    </div>
+    <div id="modal" class="modal">
+      <div class="modal__content">
+        <h2 class="modal__title">Game Over</h2>
+        <p class="modal__result">
+          Final Result: <span id="final-result"></span>
+        </p>
+        <button id="restart-button" class="modal__restart-button">
+          Restart Game
+        </button>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
 </html>

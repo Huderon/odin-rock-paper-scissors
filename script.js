@@ -1,76 +1,99 @@
-const roundsPerGame = 5;
+const gameChoicesContainer = document.querySelector(".game__choices");
+const gameChoices = gameChoicesContainer.querySelectorAll(".game__choice-button");
+const roundResultDisplay = document.querySelector("#game-result");
+const playerChoiceDisplay = document.querySelector("#player-hand");
+const computerChoiceDisplay = document.querySelector("#computer-hand");
+const playerScoreDisplay = document.querySelector("#player-score");
+const computerScoreDisplay = document.querySelector("#computer-score");
+const gameResultModal = document.querySelector("#modal");
+const finalResultDisplay = document.querySelector("#final-result");
+const restartButton = document.querySelector("#restart-button");
 const gameRules = {
   rock: ["scissors"],
   paper: ["rock"],
-  scissors: ["paper"]
+  scissors: ["paper"],
 };
 const gameResults = {
   tie: "It's a tie!",
   playerWins: "Player wins!",
-  computerWins: "Computer wins!"
+  computerWins: "Computer wins!",
+};
+const gameState = {
+  playerScore: 0,
+  computerScore: 0,
+  maxScore: 5,
 };
 
+gameChoicesContainer.addEventListener("click", (event) => {
+  const target = event.target;
+  if (target.parentElement === gameChoicesContainer) {
+    playRound(target.id, getComputerChoice());
+  }
+});
+restartButton.addEventListener("click", restartGame);
+
 function getComputerChoice() {
-  const options = Object.keys(gameRules)
+  const options = Object.keys(gameRules);
   return options[Math.floor(Math.random() * options.length)];
 }
 
-function getPlayerChoice() {
-  let playerChoice = "";
-
-  do {
-    playerChoice = prompt("Enter one of the following options: rock, paper, scissors", "").toLowerCase();
-
-    if (!gameRules[playerChoice]) {
-      alert("Enter a valid option.");
-    }
-  } while (!gameRules[playerChoice]);
-
-  return playerChoice;
+function updateScores() {
+  playerScoreDisplay.innerText = gameState.playerScore;
+  computerScoreDisplay.innerText = gameState.computerScore;
 }
 
 function playRound(playerChoice, computerChoice) {
-  console.log(`Player chooses: ${playerChoice}\nComputer chooses: ${computerChoice}`);
+  playerChoiceDisplay.innerText = playerChoice;
+  computerChoiceDisplay.innerText = computerChoice;
 
   if (playerChoice === computerChoice) {
-    return gameResults.tie;
+    roundResultDisplay.innerText = gameResults.tie;
   }
   if (gameRules[playerChoice].includes(computerChoice)) {
-    return gameResults.playerWins;
+    roundResultDisplay.innerText = gameResults.playerWins;
+    gameState.playerScore++;
+  }
+  if (gameRules[computerChoice].includes(playerChoice)) {
+    roundResultDisplay.innerText = gameResults.computerWins;
+    gameState.computerScore++;
   }
 
-  return gameResults.computerWins;
+  updateScores();
+
+  if (
+    gameState.playerScore === gameState.maxScore ||
+    gameState.computerScore == gameState.maxScore
+  ) {
+    endGame();
+  }
 }
 
-function game(rounds) {
-  let playerScore = 0;
-  let computerScore = 0;
+function endGame() {
+  gameChoices.forEach((choice) => {
+    choice.disabled = true;
+  });
 
-  for (let i = 0; i < rounds; i++) {
-    const roundResult = playRound(getPlayerChoice(), getComputerChoice())
-
-    if (roundResult === gameResults.playerWins) {
-      playerScore++
-    }
-    if (roundResult === gameResults.computerWins) {
-      computerScore++
-    }
-
-    console.log(`Round result: ${roundResult}\nCurrent Score: Player: ${playerScore} Computer: ${computerScore}`);
+  if (gameState.playerScore === gameState.maxScore) {
+    finalResultDisplay.innerText = gameResults.playerWins;
+  }
+  if (gameState.computerScore === gameState.maxScore) {
+    finalResultDisplay.innerText = gameResults.computerWins;
   }
 
-  console.log(`Final Score: Player: ${playerScore} Computer: ${computerScore}`);
-
-  let result = gameResults.tie;
-
-  if (playerScore > computerScore) {
-    result = gameResults.playerWins;
-  }
-  if (playerScore < computerScore) {
-    result = gameResults.computerWins;
-  }
-
-  return result;
+  gameResultModal.style.display = "flex";
 }
 
-game(roundsPerGame)
+function restartGame() {
+  gameState.computerScore = 0;
+  gameState.playerScore = 0;
+  playerChoiceDisplay.innerText = "";
+  computerChoiceDisplay.innerText = "";
+
+  updateScores();
+
+  gameChoices.forEach((choice) => {
+    choice.disabled = false;
+  });
+
+  gameResultModal.style.display = "none";
+}
